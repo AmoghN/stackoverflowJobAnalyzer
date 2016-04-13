@@ -1,0 +1,76 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+header,section,footer,aside,nav,article,hgroup {
+    display: block;
+}
+body {
+    width: 100%;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+}
+.main_body {
+    top: 90px;
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+.logo{
+    height: 56px;
+    width: 336px;
+}
+.search_wrapper {
+    margin: auto;
+    max-width: 600px;
+}
+.body_search_text_box {
+    padding: 20px;
+}
+.result_wrapper {
+    margin: auto;
+}
+.body_github_link {
+    padding-bottom: 20px;
+}
+.body_github_link > a {
+    font-weight: bold;
+}
+.avg_salary_table {
+    max-width: 350px;
+    margin: auto;
+    font-size: 16px;
+}
+#chart_results {
+    max-width: 1200px;
+    height: 600px;
+    margin: auto;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+}
+#chart_results > div {
+    padding: 10px;
+}
+.chart_layout {
+    margin: auto;
+    height: 400px;
+    max-width: 600px;
+    float: left;
+}
+.alert-danger {
+    margin: auto;
+    max-width: 600px;
+}
+@media screen and (max-width: 600px) {
+    .logo {
+            height: 42px;
+            width: 252px;
+        }
+}
+@media screen and (max-width: 1200px) {
+    #chart_results {
+        max-width: 600px;
+    }
+    .chart_layout {
+        width: 100%;
+    }    
+}

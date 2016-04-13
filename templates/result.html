@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content='width=device-width', initial-scale=0.8, user-scalable=0, name='viewport'>
+    <meta name="author" content="Amogh Nayak">
+    <meta name="description" content="Stackoverflow Job Analyzer">
+    <!-- change title based on search -->
+    {% if  page == 'index' %}
+        <title>Stackoverflow Job Analyzer</title>
+    {% else %}
+        <title>{{searchTerm.lower()}} - Stackoverflow Job Analyzer</title>
+    {% endif %}
+    <!-- custom favicon -->
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon"/>
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+</head>
+
+<body>
+    <div class="main_body">
+        <div class="search_wrapper">
+            <!-- LOGO -->
+            <div class="body_logo">
+                <a href="#"><img src="{{url_for('static', filename='images/stack-overflow-analyzer-logo.png')}}" class="logo" alt="Stack Overflow Analyzer Logo" title="Stack Overflow Analyzer">
+                </a>
+            </div>
+            <!-- SEARCH BAR-->
+            <div class="body_search_text_box">
+                <form name="search" class="input-group" action="/search" onsubmit="return sofAnalyzer.validateForm();" method="GET">
+                    {% if  page == 'index' %}
+                        <input id="search_value" name="q" type="text" class="form-control" placeholder="(Java, Python...)">
+                    {% else %}
+                        <input id="search_value" name="q" type="text" class="form-control" value="{{searchTerm}}">
+                    {% endif %}
+                    <span class="input-group-btn">
+                        <button id="btn_analyze_search_value" type="submit" class="btn">Analyze</button>
+                    </span>
+                </form>
+            </div>
+        </div>
+        <!-- RESULT DIV -->
+        <div class="result_wrapper">
+            <div class="body_github_link">
+                Checkout the code on <a target="_blank" href="https://github.com/AmoghN/stackoverflowJobAnalyzer">Github</a>!
+            </div>
+            {% if (success and page == 'result') %}
+            <!-- RESULT GRAPH DIV -->
+            <div id="chart_results">
+                <div class="total_results">
+                    <h5><strong>Total Results Analyzed: {{totalResults}}</strong></h5>
+                </div>
+                <div id='top_locations_chart_id' class="chart_layout"></div>
+                <script>
+                    var topLocations = {{topLocations | tojson()}}
+                    var topLocationsTitle = {{title[1] | tojson()}}
+                </script>
+                <div id='top_langs_chart_id' class="chart_layout"></div>
+                <script>
+                    var topLangs = {{topLangs | tojson()}}
+                    var topLangsTitle = {{title[0] | tojson()}}
+                </script>
+            </div>
+            {% elif (not success) %}
+            <!-- RESULT ERROR DIV -->
+            <div class="alert alert-danger">
+                <strong>Search Error!</strong> Please try something else. {{error}}
+            </div>
+            {% endif %}
+        </div>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-2.1.4.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/highcharts.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/main.js')}}"></script>
+</body>
+
+</html>
