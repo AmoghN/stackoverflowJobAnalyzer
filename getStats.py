@@ -2,7 +2,6 @@ import feedparser
 import requests
 
 def getResultSOF(searchTerm):
-
     # get RSS feed from StackOverFlow
     searchUrls = 'http://stackoverflow.com/jobs/feed?searchTerm=' + searchTerm
     # get xml text
@@ -16,7 +15,6 @@ def getResultSOF(searchTerm):
     jobResults = []
     # result object
     result = {}
-
 
     for jobEntry in getJobEntries:      
         jobResult = {}
@@ -37,7 +35,13 @@ def getResultSOF(searchTerm):
                 skills.append(skill.term)       
             jobResult["skillTags"] = skills
         else:
-            jobResult["skillTags"] = "not found"   
+            jobResult["skillTags"] = "not found"        
+        # allows remote
+        if("title" in jobEntry and "allows remote" in jobEntry.title):
+            jobResult["remote"] = True
+        else:
+            jobResult["remote"] = False
+        
         jobResults.append(jobResult)
 
     result["jobResults"] = jobResults
@@ -52,6 +56,7 @@ def getResults(searchTerm):
     totalLangs = 0
     totalLocations = 0
     totalEmployer = 0
+    totalRemote = 0
 
     # get all stat info
     for job in sofResponse["jobResults"]:
@@ -84,7 +89,12 @@ def getResults(searchTerm):
                     else:
                         topLangs[lang] = 1
 
-     # change to percent            
+        # get the number of remote jobs
+        remote = job["remote"]
+        if(remote):
+            totalRemote += 1
+
+    # change to percent            
     for lang in topLangs:
         topLangs[lang] = float(round(topLangs[lang]/totalLangs * 100,2))
     for location in topLocations:
@@ -96,7 +106,7 @@ def getResults(searchTerm):
     topLangs = sorted(topLangs.items(), key=lambda t: t[1], reverse = True)
     topLocations = sorted(topLocations.items(), key=lambda t: t[1], reverse = True)
     topEmployers = sorted(topEmployers.items(), key=lambda t: t[1], reverse = True)
-
+    
     # making result object
     result = {}
     if (len(topLangs) > 10):
@@ -108,14 +118,18 @@ def getResults(searchTerm):
     else:
         result["topLocations"] = topLocations
     if (len(topEmployers) > 10):
-        result["topEmployers"] = topEmployers[:10]
+        result["topEmployers"] = topEmployers[:5]
     else:
         result["topEmployers"] = topEmployers
+    
     if (sofResponse["totalResults"] > 0):
         result["totalResults"] = sofResponse["totalResults"]
         result["success"] = True
     else:
-         result["success"] = False           
+         result["success"] = False   
+
+    result["totalRemote"] = totalRemote    
+
     return result 
 
  

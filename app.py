@@ -1,4 +1,4 @@
-import stackOverFlowJobsAnalysis as sofja
+import getStats
 from flask import Flask, request, render_template, url_for, jsonify, redirect
 
 
@@ -13,22 +13,21 @@ def index():
 def drawGraph():
     try:
         searchTerm = request.args.get('q')
-        getResults = sofja.getResults(searchTerm)
+        getResults = getStats.getResults(searchTerm)
         topLangs = getResults["topLangs"]
         topLocations = getResults["topLocations"]
         topEmployers = getResults["topEmployers"]
+        totalRemote = getResults["totalRemote"]
         totalResults = getResults["totalResults"]
         success = getResults["success"]
-        title = ['Top ' + str(len(topLangs)) + ' tech. skills to combine with ' + searchTerm.upper(), 
-                'Top ' + str(len(topLocations)) + ' locations for ' + searchTerm.upper()]
         return render_template(
             'result.html'
             ,searchTerm = searchTerm
             ,topLangs=topLangs
             ,topLocations = topLocations
             ,topEmployers = topEmployers
+            ,totalRemote = totalRemote
             ,totalResults = totalResults
-            ,title = title
             ,success = success
             ,page = "result"
             )
@@ -39,5 +38,5 @@ def drawGraph():
             ,searchTerm = searchTerm
             ,success = success)
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)

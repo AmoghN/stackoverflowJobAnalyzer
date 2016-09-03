@@ -1,7 +1,4 @@
-// main object
-var sofAnalyzer = {}
-
-sofAnalyzer.validateForm = function(){
+function validateForm(){
 	// check if the search is ridiculous 
 	var search_value = $("#search_value").val();
 	if(search_value.length == 0){
