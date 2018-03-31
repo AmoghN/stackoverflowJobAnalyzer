@@ -61,6 +61,10 @@
                         {% endif %}
                         <span title={{topEmployer[0]}}>{{topEmployer[0]}}</span>               
                     {% endfor %}                    
+                </div>
+                <div>
+                    <h4>Total Remote jobs:</h4> 
+                    <p>{{totalRemote}}<p>
                 </div>                
                 <div id='top_locations_chart_id' class="chart_layout"></div>
                 <script>
@@ -76,7 +80,7 @@
             {% elif (not success) %}
             <!-- RESULT ERROR DIV -->
             <div class="alert alert-danger">
-                <strong>Search Error!</strong> Please try something else. {{error}}
+                <strong>No results!</strong> Please try something else. {{error}}
             </div>
             {% endif %}
         </div>

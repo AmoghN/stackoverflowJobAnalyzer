@@ -1,5 +1,6 @@
 import getStats
 from flask import Flask, request, render_template, url_for, jsonify, redirect
+import encodings.idna
 
 
 app = Flask(__name__)
@@ -11,7 +12,7 @@ def index():
 # search GET request from stackOverFlow and get stats
 @app.route('/search', methods=['GET'])
 def drawGraph():
-    try:
+    try:      
         searchTerm = request.args.get('q')
         getResults = getStats.getResults(searchTerm)
         topLangs = getResults["topLangs"]
@@ -39,4 +40,4 @@ def drawGraph():
             ,success = success)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
