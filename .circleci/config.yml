@@ -1,14 +1,18 @@
-version: 2.0
+version: 2
 jobs:
   build:
-    working_directory: ~/repo
     docker:
-      - image: circleci/python3.6.7
+      - image: python:3.6-jessie
+
+    working_directory: ~/repo
 
     steps:
       - checkout
+      - run: python3.6 -m pip install -r requirements.txt
+
       - run:
-        - name: install dependencies
-        - command: pip install -r requirements.txt
+          name: start flask app
+          command: python app.py
+          background: true
 
       - run: pytest tests/
