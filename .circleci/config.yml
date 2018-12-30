@@ -1,0 +1,14 @@
+version: 2.0
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python3.6.7
+
+    steps:
+      - checkout
+      - run:
+        - name: install dependencies
+        - command: pip install -r requirements.txt
+
+      - run: pytest tests/

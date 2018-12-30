@@ -7,24 +7,24 @@ def getResultSOF(searchTerm):
     searchUrls = 'http://stackoverflow.com/jobs/feed?q={}&l={}'.format(searchTerm, "")
     # get xml text
     searchUrlHtml = requests.get(searchUrls).text
-    rssFeedSOF = feedparser.parse(searchUrlHtml)    
+    rssFeedSOF = feedparser.parse(searchUrlHtml)
     # total results
     totalResults = rssFeedSOF.feed.os_totalresults
-    # all job entries 
+    # all job entries
     getJobEntries = rssFeedSOF.entries
     # job entries object
     jobResults = []
     # result object
     result = {}
 
-    for jobEntry in getJobEntries:      
+    for jobEntry in getJobEntries:
         jobResult = {}
         # find employer
         if(jobEntry.get("author")):
             jobResult["employer"] = jobEntry.author
         else:
             jobResult["employer"] = None
-        # find location 
+        # find location
         if(jobEntry.get("location")):
             jobResult["location"] = jobEntry.location
         else:
@@ -33,20 +33,20 @@ def getResultSOF(searchTerm):
         if(jobEntry.get("tags")):
             skills = []
             for skill in jobEntry["tags"]:
-                skills.append(skill.term)       
+                skills.append(skill.term)
             jobResult["skillTags"] = skills
         else:
-            jobResult["skillTags"] = None        
+            jobResult["skillTags"] = None
         # allows remote
         if(jobEntry.get("title") and "allows remote" in jobEntry.get("title")):
             jobResult["remote"] = True
         else:
             jobResult["remote"] = None
-        
+
         jobResults.append(jobResult)
 
     result["jobResults"] = jobResults
-    result["totalResults"] = int(totalResults)    
+    result["totalResults"] = int(totalResults)
     return result
 
 def getResults(searchTerm):
@@ -66,7 +66,7 @@ def getResults(searchTerm):
         if(employer):
             totalEmployer += 1
             if (employer in topEmployers):
-                topEmployers[employer] += 1                           
+                topEmployers[employer] += 1
             else:
                 topEmployers[employer] = 1
 
@@ -75,10 +75,10 @@ def getResults(searchTerm):
         if(location):
             totalLocations += 1
             if (location in topLocations):
-                topLocations[location] += 1                
+                topLocations[location] += 1
             else:
                 topLocations[location] = 1
-                
+
         # get all languages
         skillTags = job.get("skillTags")
         if(skillTags):
@@ -93,8 +93,8 @@ def getResults(searchTerm):
         # get the number of remote jobs
         if(job.get("remote")):
             totalRemote += 1
-    
-    # change to percent            
+
+    # change to percent
     for lang in topLangs:
         topLangs[lang] = float(round(topLangs[lang]/totalLangs * 100,2))
     for location in topLocations:
@@ -106,7 +106,7 @@ def getResults(searchTerm):
     topLangs = sorted(topLangs.items(), key=lambda t: t[1], reverse = True)
     topLocations = sorted(topLocations.items(), key=lambda t: t[1], reverse = True)
     topEmployers = sorted(topEmployers.items(), key=lambda t: t[1], reverse = True)
-    
+
     # making result object
     result = {}
     if (len(topLangs) > 10):
@@ -121,15 +121,13 @@ def getResults(searchTerm):
         result["topEmployers"] = topEmployers[:10]
     else:
         result["topEmployers"] = topEmployers
-    
+
     if (sofResponse["totalResults"] > 0):
         result["totalResults"] = sofResponse["totalResults"]
         result["success"] = True
     else:
-         result["success"] = False   
+         result["success"] = False
 
     result["totalRemote"] = totalRemote
-    
-    return result 
 
- 
+    return result
