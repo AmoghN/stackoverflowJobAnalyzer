@@ -1,12 +1,12 @@
 import feedparser
 import requests
-import time
 
 def getResultSOF(searchTerm):
     # get RSS feed from StackOverFlow
     searchUrls = 'http://stackoverflow.com/jobs/feed?q={}&l={}'.format(searchTerm, "")
     # get xml text
     searchUrlHtml = requests.get(searchUrls).text
+
     rssFeedSOF = feedparser.parse(searchUrlHtml)
     # total results
     totalResults = rssFeedSOF.feed.os_totalresults
