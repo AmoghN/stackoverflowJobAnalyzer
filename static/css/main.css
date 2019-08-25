@@ -9,6 +9,9 @@ body {
     width: 100%;
     font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
 }
+.btn {
+    border: 1px solid rgb(209, 209, 209);
+}
 .main_body {
     top: 90px;
     display: block;
@@ -72,5 +75,5 @@ body {
     }
     .chart_layout {
         width: 100%;
-    }    
+    }
 }
